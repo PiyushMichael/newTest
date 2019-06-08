@@ -1,0 +1,12 @@
+E:\vc-code\major\major\bin\Debug\major.exe.config
+E:\vc-code\major\major\bin\Debug\major.exe
+E:\vc-code\major\major\bin\Debug\major.pdb
+E:\vc-code\major\major\obj\Debug\major.Properties.Resources.resources
+E:\vc-code\major\major\obj\Debug\major.csproj.GenerateResource.Cache
+E:\vc-code\major\major\obj\Debug\major.exe
+E:\vc-code\major\major\obj\Debug\major.pdb
+E:\vc-code\major\major\obj\Debug\major.Form1.resources
+E:\vc-code\major\major\obj\Debug\major.csprojResolveAssemblyReference.cache
+C:\Users\piyush\Desktop\major\major\bin\Debug\major.exe.config
+C:\Users\piyush\Desktop\major\major\obj\Debug\major.exe
+C:\Users\piyush\Desktop\major\major\obj\Debug\major.pdb
