@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>game</title>
+    </head>
+    <body>
+        <div id="controls">
+            <p style="font-size:30px">Avel Cade keeling wool balls..</p>
+            <label>Number of balls: </label>
+            <input type="number" min=1 max=30 value=10 id="nBalls" oninput="changeBalls(this.value)">
+            <p></p>
+            <label>Select color of avel cade: </label>
+            <input type="color" value="#ff0000" oninput="changeColor(this.value)" id="colorChooser">
+            <p></p>
+            <label>Color of balls to eat: </label>
+            <select onchange="selectColor(this.value)" id="colorBallEat">
+                <option value="red">Red</option>
+                <option value="blue">Blue</option>
+                <option value="green">Green</option>
+            </select>
+            <p></p>
+            <label>Time warp thingie :D -</label>
+            <input type="range" value="1" step=0.1 min=0.1 max=3 oninput="changeBallSpeed(this.value)" id="ballSpeed">+
+            <p></p>
+        </div>
+        <canvas id="myCanvas" width="600" height="800" style="border: 1px solid black;">Lol get a new browser</canvas>
+        <p id="c" style="font-size:30px">move the mouse around :)</p>
+    </body>
+    <script>
+        var canvas, ctx, w, h, mousePos, mouseButton,eat;
+var xMon = 10;
+var yMon = 10;
+var monSpeed = 1;
+var count,counter;
+var player = 
+{
+    x:10,
+    y:10,
+    width:20,
+    height:20,
+    color:'red'
+}
+var balls=[];
+var globalSPeed = 1;
+var colorToEat = 'red';
+var score = 0;
+var id;
+
+window.onload = function init()
+{
+    canvas = document.getElementById("myCanvas");
+    ctx = canvas.getContext('2d');
+    ctx2 = canvas.getContext('2d');
+    counter = document.getElementById('c');
+    w = canvas.width;
+    h = canvas.height;
+    balls = createBalls(10);
+    canvas.addEventListener('mousemove',mouseMoved)
+    mainLoop();
+}
+
+function changeBalls(n)
+{
+    balls = createBalls(n);
+}
+
+function mouseMoved(evt)
+{
+    mousePos = getPos(canvas,evt);
+}
+
+function getPos(canvas,evt)
+{
+    var rect = canvas.getBoundingClientRect();
+    return{
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+function drawFilledRectangle(r)
+{
+    ctx.save();
+    ctx.translate(r.x,r.y);
+    ctx.fillStyle = r.color;
+    ctx.fillRect(0,0,r.width,r.height);
+    ctx.restore();
+}
+
+function drawFilledCircle(c)
+{
+    ctx.save();
+    ctx.translate(c.x,c.y);
+    ctx.fillStyle = c.color;
+    ctx.beginPath();
+    ctx.arc(0,0,c.radius,0,2*Math.PI);
+    ctx.fill();
+    ctx.restore();
+}
+
+function drawMonster(x,y)
+{
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.strokeRect(0,0,100,100);
+    ctx.fillRect(20,20,10,10);
+    ctx.fillRect(65,20,10,10);
+    ctx.strokeRect(45,40,10,40);
+    ctx.strokeRect(35,84,30,10);
+    ctx.fillRect(38,84,10,10);
+    ctx.fillRect(52,84,10,10);
+    ctx.restore();
+}
+
+function moveBall(b)
+{
+    b.x += b.speedX*globalSPeed;
+    b.y += b.speedY*globalSPeed;
+    testWallCollision(b);
+}
+
+function movePlayer()
+{
+    if(mousePos !== undefined)
+    {
+        player.x = mousePos.x-10;
+        player.y = mousePos.y-10;
+    }
+}
+
+function mainLoop()
+{
+    eat=0;
+    ctx.clearRect(0,0,w,h);
+    drawFilledRectangle(player);
+    for(var i=0;i<balls.length;i++)drawFilledCircle(balls[i]);    
+    for(var i=0;i<balls.length;i++)moveBall(balls[i]);
+    testPlayerCollision(balls);
+    movePlayer();
+    for(var i=0;i<balls.length;i++)
+    {
+        if ((balls[i].color == colorToEat)&&(balls[i].radius!=0))eat++;
+    }
+    //if(eat===0)
+    //{
+        //counter.innerHTML += "<br>GAME OVER!";
+      //  return;
+    //}
+    id = requestAnimationFrame(mainLoop);
+}
+
+function testWallCollision(b)
+{
+    if((b.x+b.radius)>w)
+    {
+        b.speedX = -b.speedX;
+        b.x = w - b.radius;
+    } else if ((b.x-b.radius)<0)
+    {
+        b.speedX = -b.speedX;
+        b.x = b.radius;
+    }
+
+    if((b.y+b.radius)>h)
+    {
+        b.speedY = -b.speedY;
+        b.y = h - b.radius;
+    } else if ((b.y-b.radius)<0)
+    {
+        b.speedY = -b.speedY;
+        b.y = b.radius;
+    }
+}
+
+function createBalls(n)
+{
+    var bArray = [];
+    for(var i=0;i<n;i++)
+    {
+        var b =
+        {
+            x:w/2,
+            y:h/2,
+            radius: 5 + 30*Math.random(),
+            speedX: -5 + 10*Math.random(),
+            speedY: -5 + 10*Math.random(),
+            color: getARandomColor()
+        }
+        bArray.push(b);
+    }
+    count = n;
+    return bArray;
+}
+
+function getARandomColor()
+{
+    var colors = ['red','blue','green','yellow','purple','pink','cyan'];
+    var index = Math.round((colors.length-1)*Math.random());
+    return colors[index];
+}
+
+function testPlayerCollision(b)
+{
+    for(var i=0;i<b.length;i++)
+    {
+        if(crOverlap(player.x,player.y,player.width,player.height,b[i].x,b[i].y,b[i].radius))
+        {
+            b[i].x==100;
+            b[i].y=-100;
+            b[i].speedX=0;
+            b[i].speedY=0;
+            b[i].radius=0;
+            numberBalls(b);
+        }
+    }
+}
+
+function numberBalls(b)
+{
+    var n=count;
+    var score = 0;
+    var red = 0;
+    for(var i=0;i<b.length;i++)
+    {
+        if ((b[i].color == colorToEat)&&(b[i].radius!=0))red++;
+    }
+    for(var i=0;i<b.length;i++)
+    {
+        if(b[i].radius==0)n--;
+        if(b[i].radius==0)
+        {
+            if(b[i].color==colorToEat)score++;
+            else score--;
+        }
+    }
+    //ctx2.save();
+    //ctx2.font="30 px Arial";
+    if(n===0||red===0)
+    {
+        if(score>1)counter.innerHTML="YOU WIN!!";
+        else counter.innerHTML="YOU LOSE!";
+    }
+    else counter.innerHTML="no. of balls = "+n+"<br>no. of target balls: "+red+"<br>score: "+score;
+    //ctx2.restore();
+    //if(red===0)cancelAnimationFrame(id);
+}
+
+function crOverlap(x0,y0,w0,h0,cx,cy,r)
+{
+    var testX=cx;
+    var testY=cy;
+    if (testX < x0) testX=x0;
+    if (testX > (x0+w0)) testX=(x0+w0);
+    if (testY < y0) testY=y0;
+    if (testY > (y0+h0)) testY=(y0+h0);
+    return (((cx-testX)*(cx-testX)+(cy-testY)*(cy-testY))< r*r);
+}
+
+function changeBallSpeed(coef)
+{
+    globalSPeed=coef;
+}
+
+function selectColor(c)
+{
+    colorToEat = c;
+}
+
+function changeColor(x)
+{
+    player.color = x;
+}
+    </script>
+</html>
