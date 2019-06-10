@@ -10,6 +10,10 @@ class Garage extends React.Component
 	{
 		return <h1>this is the garage class inside car class</h1>;
 	}
+	componentWillUnmount()
+	{
+		alert("garage component unmounted");
+	}
 }
 
 class Car extends React.Component
@@ -26,17 +30,24 @@ class Car extends React.Component
 	}
 	delThis = () => {
 		this.setState({show: false});
-		alert("deleted everythign lol");
 	}
 	/*static getDerivedStateFromProps(props,state)
 	{
 		return {model: props.col.model};
 	}*/
+	Aler = () => {
+		alert("teehee an alert box :)");
+	}
 	render()
 	{
+		let x;
+		if(this.state.show == true)
+		{
+			x=<Garage />
+		}
 		return (
 			<div>
-				<Garage />
+				{x}
 				<p>this paragraph of {this.state.bleh} car eheh</p>
 				<p>second para {this.innerHTML}</p>
 				<p>passing car details as a prop: {this.props.col.brand}, {this.props.col.model}</p>
@@ -45,7 +56,8 @@ class Car extends React.Component
 				<br/>
 				<p>issa {this.state.bleh} color car</p>
 				<button type="button" onClick={this.changeColor}>change colour</button>
-				<button type="button" onClick={this.delThis}>delete everything</button>
+				<button type="button" onClick={this.delThis}>delete/unmount garage component</button>
+				<button type="button" onClick={this.Aler}>Shows Alert Box</button>
 				<div id="boo"></div>
 				<div id="deb"></div>
 				<div id="up"></div>
