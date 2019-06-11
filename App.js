@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './App.css';
 //import Popup from 'reactjs-popup';
 
 const strElement = <div><h1>Hello React! H1 element added</h1> <li>peugeot</li> <li>citreon</li> <li>renault</li></div>
@@ -50,15 +51,20 @@ class Car extends React.Component
 	render()
 	{
 		let x;
+		let mystyle = {
+		color: "white",
+		backgroundColor: "DodgerBlue",
+		padding: "10px",
+		fontFamily: "Arial"
+		};
 		if(this.state.show == true)
 		{
-			x=<Garage />
+			x=<Garage style={mystyle}/>
 		}
 		let head="";
 		if(this.state.headr || this.state.nam || this.state.age){
 			head = <p>hello {this.state.nam}, you are here for {this.state.headr} and you are {this.state.age} years old</p>;
 		}
-		
 		return (
 			<div>
 				{x}
@@ -75,7 +81,7 @@ class Car extends React.Component
 				<div id="boo"></div>
 				<div id="deb"></div>
 				<div id="up"></div>
-				<form>
+				<form style={mystyle}>
 					<h1>This is a form :)</h1>
 					{head}
 					<p>Enter your headr:</p>
