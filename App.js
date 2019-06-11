@@ -6,9 +6,18 @@ const strElement = <div><h1>Hello React! H1 element added</h1> <li>peugeot</li> 
 
 class Garage extends React.Component
 {
+	even = (a,b) =>{
+		alert(b.type);
+		//here a and b are reversed
+	}
 	render()
 	{
-		return <h1>this is the garage class inside car class</h1>;
+		//here using bind function i dunno what it instead of arrow function
+		return (
+		<div onClick={this.even.bind(this,"goal")}>
+			<h1>this is the garage class inside car class</h1>
+		</div>
+		);
 	}
 	componentWillUnmount()
 	{
@@ -21,7 +30,7 @@ class Car extends React.Component
 	constructor(props)
 	{
 		super(props);
-		this.state = {bleh: "red", col: "EHEH", model: props.col.model, show: true};
+		this.state = {dd: "tata", strVar: "", err: "",headr: "", nam:"", age: '', bleh: "red", col: "EHEH", model: props.col.model, show: true};
 		this.innerHTML = "inner HTML text :O"
 	};
 	changeColor =() =>{
@@ -45,6 +54,11 @@ class Car extends React.Component
 		{
 			x=<Garage />
 		}
+		let head="";
+		if(this.state.headr || this.state.nam || this.state.age){
+			head = <p>hello {this.state.nam}, you are here for {this.state.headr} and you are {this.state.age} years old</p>;
+		}
+		
 		return (
 			<div>
 				{x}
@@ -61,6 +75,28 @@ class Car extends React.Component
 				<div id="boo"></div>
 				<div id="deb"></div>
 				<div id="up"></div>
+				<form>
+					<h1>This is a form :)</h1>
+					{head}
+					<p>Enter your headr:</p>
+					<input type="text" name="headr" onChange={this.formHandler}/>
+					<p>Enter your name:</p>
+					<input type="text" name="nam" onChange={this.formHandler}/>
+					<p>Enter your age:</p>
+					<input type="text" name="age" onChange={this.formHandler}/>
+					<p>A text area which is now stored as a state variable in react: </p>
+					<textarea name="txt" value={this.state.strVar}/>
+					<p>Here's a drop down list :)</p>
+					<select value={this.state.dd}>
+						<option value="mahindra">Mahindra</option>
+						<option value="bajaj">Bajaj</option>
+						<option value="tata">TATA</option>
+						<option value="tvs">TVS</option>
+					</select>
+					<p></p>
+					<input type="submit"/>
+					<p>{this.state.err}</p>
+				</form>
 			</div>
 		);
 	}
@@ -74,7 +110,14 @@ class Car extends React.Component
 	}
 	componentDidUpdate()
 	{
-		document.getElementById("up").innerHTML += "component updated<br>"
+		document.getElementById("up").innerHTML += "*";
+	}
+	formHandler = (event) =>{
+		/* document.getElementById("up").innerHTML += "FORM updated!<br>"; */
+		let n = event.target.name;
+		let v = event.target.value;
+		if(n === "age" && v!=0 && !Number(v))this.setState({err: "age must be number"});
+		else this.setState({[n]: v});
 	}
 }
 class App extends React.Component
@@ -88,4 +131,3 @@ class App extends React.Component
 }
 
 export default App;
-
