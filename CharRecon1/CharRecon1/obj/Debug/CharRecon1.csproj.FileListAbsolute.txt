@@ -1,0 +1,9 @@
+E:\vc-code\CharRecon1\CharRecon1\bin\Debug\CharRecon1.exe.config
+E:\vc-code\CharRecon1\CharRecon1\obj\Debug\CharRecon1.csprojResolveAssemblyReference.cache
+E:\vc-code\CharRecon1\CharRecon1\obj\Debug\CharRecon1.Properties.Resources.resources
+E:\vc-code\CharRecon1\CharRecon1\obj\Debug\CharRecon1.csproj.GenerateResource.Cache
+E:\vc-code\CharRecon1\CharRecon1\bin\Debug\CharRecon1.exe
+E:\vc-code\CharRecon1\CharRecon1\bin\Debug\CharRecon1.pdb
+E:\vc-code\CharRecon1\CharRecon1\obj\Debug\CharRecon1.exe
+E:\vc-code\CharRecon1\CharRecon1\obj\Debug\CharRecon1.pdb
+E:\vc-code\CharRecon1\CharRecon1\obj\Debug\CharRecon1.Form1.resources
